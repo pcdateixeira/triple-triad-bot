@@ -1,0 +1,9 @@
+# Sensitive information #
+########################
+auth.json
+
+# Dependencies #
+################
+node_modules/
+
+#

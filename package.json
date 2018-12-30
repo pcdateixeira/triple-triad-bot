@@ -1,0 +1,10 @@
+{
+  "name": "Triple Triad",
+  "version": "0.0.0",
+  "description": "A FFXIV Triple Triad bot for Discord",
+  "main": "bot.js",
+  "author": "pcdateixeira",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+  }
+}

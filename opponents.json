@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Momodi",
+    "requiredCards": ["Momodi-Modi", "Mother-Miounne", "Amalj'aa"],
+    "optionalCards": ["Mutamix-Bubblypots", "Baderon-Tenfingers", "Chocobo", "Coeurl", "Coblyn"]
+  }, {
+    "name": "MomodiTest",
+    "requiredCards": ["Momodi-Modi", "Mother-Miounne", "Amalj'aa"],
+    "optionalCards": ["Mutamix-Bubblypots", "Baderon-Tenfingers", "Chocobo", "Coeurl", "Coblyn"]
+  }
+]
