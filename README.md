@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/pcdateixeira/triple-triad-bot/master/icon.jpg" width="200">
+  <img src="https://raw.githubusercontent.com/pcdateixeira/triple-triad-bot/master/public/assets/icon.jpg" width="200">
   <br>
   <h1 align="center">Triple Triad Bot</h1>
 </p>
