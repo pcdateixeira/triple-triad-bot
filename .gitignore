@@ -6,4 +6,5 @@ auth.json
 ################
 node_modules/
 
-#
+# Images #
+cards/

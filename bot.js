@@ -3,13 +3,14 @@ const Discord = require(`discord.js`);
 const Canvas = require('canvas');
 
 // Import the required JSON files
-const auth = require(`./auth.json`);
-const opponents = require(`./opponents.json`);
-const cards = require(`./cards.json`);
+const Auth = require(`./auth.json`);
+const Opponents = require(`./opponents.json`);
+const Cards = require(`./cards.json`);
 
-// The dimensions of each card
-const CARDHEIGHT = 128;
-const CARDWIDTH = 104;
+// Fixed values used throughout the code
+const CARDHEIGHT = 128; // pixels
+const CARDWIDTH = 104; // pixels
+const DECKSIZE = 5;
 
 /**
  * Functions
@@ -46,8 +47,43 @@ async function drawBoard(message) {
   return;
 }
 
+// Creates a deck for an opponent
+async function createDeck(message, opponent) {
+  var deck = [];
+
+  // Creates a list of card names
+  deck = Opponents[opponent].requiredCards.slice(0); // Adds the opponent's required cards to the deck
+  var numberMissing = DECKSIZE - deck.length; // Sees how many cards are missing to complete the deck...
+  var remainingCards = Opponents[opponent].optionalCards.slice(0); // and gets the cards that can still be part of the deck.
+
+  for (j = 0; j < numberMissing; j++) {
+    var rand = Math.floor(Math.random() * remainingCards.length); // Finds a random index for one of the optional cards
+    deck.push(remainingCards.splice(rand, 1)); // Removes that card from the remaining cards list while simultaneously adding it to the deck
+  }
+
+  // Now that it has the card names, gets the other card stats
+  for (i = 0; i < DECKSIZE; i++) {
+    var cardName = deck[i]; // Saves the name before it gets replaced in the line below
+    deck[i] = Cards[deck[i]]; // Gets the card's info
+    deck[i].name = cardName; // Adds a "name" property to the info
+  }
+
+  // Creates a string detailing the created deck
+  text = `Here is your opponent's deck:
+• ${deck[0].name} (${"☆".repeat(deck[0].star)}, ${deck[0].type},  ↑${deck[0].up}, →${deck[0].right}, ↓${deck[0].down}, ←${deck[0].left})
+• ${deck[1].name} (${"☆".repeat(deck[1].star)}, ${deck[1].type},  ↑${deck[1].up}, →${deck[1].right}, ↓${deck[1].down}, ←${deck[1].left})
+• ${deck[2].name} (${"☆".repeat(deck[2].star)}, ${deck[2].type},  ↑${deck[2].up}, →${deck[2].right}, ↓${deck[2].down}, ←${deck[2].left})
+• ${deck[3].name} (${"☆".repeat(deck[3].star)}, ${deck[3].type},  ↑${deck[3].up}, →${deck[3].right}, ↓${deck[3].down}, ←${deck[3].left})
+• ${deck[4].name} (${"☆".repeat(deck[4].star)}, ${deck[4].type},  ↑${deck[4].up}, →${deck[4].right}, ↓${deck[4].down}, ←${deck[4].left})`;
+
+  message.channel.send(text);
+  return;
+}
+
 /**
+ *
  * Main code
+ *
  */
 
 // Create an instance of a Discord client
@@ -65,20 +101,24 @@ client.on(`ready`, () => {
 client.on(`message`, async message => {
   // If the message is a bot command
   if (message.content.substring(0,3) == `tt!`) {
-    args = message.content.substring(3).split(` `);
+    args = message.content.substring(3).split(` `); // Gets the command's parameters
 
     switch(args[0]) {
-      // If the message is "ping"
-      case `ping`:
-        // Send "pong" to the same channel
-        message.channel.send(`pong`);
+      case `ping`: // If the message is "ping"...
+        message.channel.send(`pong`); // sends "pong" to the same channel
         break;
       case `startmatch`:
-        if (args.length == 1) {
+        if (args.length == 1) { // If no opponent name was given
           message.channel.send(`Opponent name missing.`);
         }
         else {
-          message.channel.send(`Match against opponent ${opponents[0].name} starting!`);
+          if (Opponents.hasOwnProperty(args[1])) { // If an opponent name was given, and it exists in the db
+            message.channel.send(`Match against opponent ${args[1]} starting!`);
+            createDeck(message, args[1]);
+          }
+          else { // If it doesn't exist in the db
+            message.channel.send(`This opponent does not exist in the database.`);
+          }
         }
         break;
       case `board`:
@@ -90,4 +130,4 @@ client.on(`message`, async message => {
 });
 
 // Log the bot in using the token from https://discordapp.com/developers/applications/me
-client.login(auth.token);
+client.login(Auth.token);
