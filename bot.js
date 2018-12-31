@@ -3,9 +3,9 @@ const Discord = require(`discord.js`);
 const Canvas = require('canvas');
 
 // Import the required JSON files
-const Auth = require(`./auth.json`);
-const Opponents = require(`./opponents.json`);
-const Cards = require(`./cards.json`);
+const Auth = require(`./public/json/auth.json`);
+const Opponents = require(`./public/json/opponents.json`);
+const Cards = require(`./public/json/cards.json`);
 
 // Fixed values used throughout the code
 const CARDHEIGHT = 128; // pixels
@@ -25,7 +25,7 @@ async function drawBoard(message) {
   const ctx = canvas.getContext('2d');
 
   // Since the image takes time to load, you should await it
-  const background = await Canvas.loadImage(`./cards/Amalj'aa.png`);
+  const background = await Canvas.loadImage(`./public/assets/cards/Amalj'aa.png`);
 
   // Draws 9 cards in a 3x3 grid
   ctx.drawImage(background, 0,                0,            CARDWIDTH, CARDHEIGHT); // top-left

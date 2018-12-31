@@ -5,6 +5,4 @@ auth.json
 # Dependencies #
 ################
 node_modules/
-
-# Images #
-cards/
+package-lock.json
